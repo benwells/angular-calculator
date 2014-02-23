@@ -1,16 +1,17 @@
 function CalculatorController($scope) {
   //storage of the calculation string
   $scope.calcString = "";
+  $scope.result = "";
 
   $scope.build = function (e) {
     var elem = angular.element(e.target);
-    // $scope.construct(elem.html());
+    $scope.construct(elem.html());
   }
 
   $scope.execute = function(e) {
     var calculation = $scope.calcString;
     try {
-      var ev = eval(calculation);
+      $scope.result = eval(calculation);
       $scope.calcString = ev;
     } catch (e) {
      //what should I do here?
@@ -20,12 +21,14 @@ function CalculatorController($scope) {
   //for clear button
   $scope.clear = function(e) {
     if ($scope.calcString != ''){
-      $scope.calcString = ''
+      $scope.calcString = '';
+      $scope.result = '';
     }
   }
 
   $scope.construct = function(e){
     $scope.calcString = $scope.calcString + e;
+    $scope.result = $scope.calcString;
   }
 
   $scope.delete = function() {
@@ -34,9 +37,7 @@ function CalculatorController($scope) {
 
   $scope.keyup = function(keyEvent) {
       var k = String.fromCharCode(keyEvent.keyCode);
-      // console.log(k)
-      // console.log(keyEvent.keyCode)
-      // console.log(keyEvent.shiftKey)
+
       if (keyEvent.shiftKey && k == 8){ //for *
         $scope.construct("*")
       }
@@ -62,7 +63,7 @@ function CalculatorController($scope) {
         $scope.construct("-");
       }
       else if (k.match(/^[\d\+1]+$/g)){  //if key is a number
-        $scope.construct(k)
+        $scope.construct(k);
       }
       else if (keyEvent.keyCode == 8){ //for delete
         $scope.delete();
